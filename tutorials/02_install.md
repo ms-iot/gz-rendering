@@ -162,6 +162,7 @@ This assumes you have created and activated a Conda environment while installing
 1. Install dependencies:
   ```
   conda install ogre --channel conda-forge
+  conda install freeglut glew --channel conda-forge
   ```
 
 2. Install Ignition dependencies:
