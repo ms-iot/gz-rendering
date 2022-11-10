@@ -128,6 +128,8 @@ mat4 transpose(mat4 m)
 #define vec3_splat vec3
 #define vec4_splat vec4
 
+#if __VERSION__ >= 120
+
 mat4 mtxFromRows(vec4 a, vec4 b, vec4 c, vec4 d)
 {
     return transpose(mat4(a, b, c, d));
@@ -142,6 +144,7 @@ mat3 mtxFromCols(vec3 a, vec3 b, vec3 c)
 {
     return mat3(a, b, c);
 }
+#endif
 
 #define STATIC
 

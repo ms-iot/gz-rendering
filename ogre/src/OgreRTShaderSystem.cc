@@ -491,16 +491,39 @@ bool OgreRTShaderSystem::Paths(std::string &coreLibsPath,
 
   // path to look for ogre media files
   std::vector<std::string> paths;
+  std::string mediaPath;
 
-  // install path
-  std::string mediaPath = common::joinPaths(resourcePath, "ogre", "media",
-      "rtshaderlib150");
-  paths.push_back(mediaPath);
+#if (OGRE_VERSION_MAJOR == 1 && OGRE_VERSION_MINOR >= 12)
+    mediaPath = common::joinPaths(resourcePath, "ogre", "media",
+        "rtshaderlib112");
+    paths.push_back(mediaPath);
 
-  // src path
-  mediaPath = common::joinPaths(resourcePath, "ogre", "src", "media",
-      "rtshaderlib150");
-  paths.push_back(mediaPath);
+    std::string subMediaPath = common::joinPaths(mediaPath, "GLSL");
+    paths.push_back(subMediaPath);
+
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+        subMediaPath, "FileSystem", "General");
+
+    subMediaPath = common::joinPaths(mediaPath, "HLSL_Cg");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+        subMediaPath, "FileSystem", "General");
+
+    subMediaPath = common::joinPaths(mediaPath, "materials");
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+        subMediaPath, "FileSystem", "General");
+#else
+  {
+    // install path
+    mediaPath = common::joinPaths(resourcePath, "ogre", "media",
+        "rtshaderlib150");
+    paths.push_back(mediaPath);
+
+    // src path
+    mediaPath = common::joinPaths(resourcePath, "ogre", "src", "media",
+        "rtshaderlib150");
+    paths.push_back(mediaPath);
+  }
+#endif
 
   for (auto const &p : paths)
   {
